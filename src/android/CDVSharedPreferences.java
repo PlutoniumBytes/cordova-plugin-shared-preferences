@@ -200,7 +200,7 @@ public class CDVSharedPreferences extends CordovaPlugin {
 
                         if (sharedPreferences.contains(key)) {
                             JSONArray message = new JSONArray();
-                            message.put(sharedPreferences.getInt(key, Long.MIN_VALUE));
+                            message.put(sharedPreferences.getInt(key, Int.MIN_VALUE));
                             callbackContext.success(message);
                             return;
                         }
