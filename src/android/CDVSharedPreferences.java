@@ -188,6 +188,34 @@ public class CDVSharedPreferences extends CordovaPlugin {
 
             return true;
         }
+		
+		if (action.equals("getInt")) {
+            cordova.getThreadPool().execute(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        String name = args.getString(NAME);
+                        String key = args.getString(KEY);
+                        SharedPreferences sharedPreferences = getSharedPreferences(name);
+
+                        if (sharedPreferences.contains(key)) {
+                            JSONArray message = new JSONArray();
+                            message.put(sharedPreferences.getInt(key, Long.MIN_VALUE));
+                            callbackContext.success(message);
+                            return;
+                        }
+
+                        callbackContext.error(MISSING_KEY);
+
+                    } catch (Exception e) {
+                        callbackContext.error(e.getMessage());
+                    }
+                }
+            });
+
+            return true;
+        }
+
 
         if (action.equals("del")) {
             cordova.getThreadPool().execute(new Runnable() {

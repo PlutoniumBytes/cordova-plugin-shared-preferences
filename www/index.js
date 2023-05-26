@@ -125,6 +125,18 @@ SharedPreferences.prototype.getNumber = createGetter(
     'getNumber'
 )
 
+SharedPreferences.prototype.getInt = createGetter(
+    isNumber,
+    function(value) {
+        // https://issues.apache.org/jira/browse/CB-13842
+        // Javascript numbers are mapped to native data type, double.
+        // Android implementation of PluginResult doesn't handle double value:
+        // we have to wrap it around JSONArray
+        return isArray(value) ? value[0] : value
+    },
+    'getInt'
+)
+
 /**
  * Sets a number in the preferences.
  *
